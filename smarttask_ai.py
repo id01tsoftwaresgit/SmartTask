@@ -327,7 +327,11 @@ class MainWindow(QMainWindow):
         light = base + "QWidget { background-color: #f0f2f5; color: #333; } QTextEdit, QLineEdit, QListWidget, QDateEdit { background-color: #fff; border: 1px solid #d9d9d9; } QPushButton { background-color: #007bff; color: white; border: none; } QPushButton:hover { background-color: #0056b3; } QStatusBar { background-color: #e9ecef; } #sidebar { background-color: #fff; }"
         dark = base + "QWidget { background-color: #1c1c1e; color: #f0f0f0; } QTextEdit, QLineEdit, QListWidget, QDateEdit { background-color: #2c2c2e; border: 1px solid #444; } QPushButton { background-color: #0a84ff; color: white; border: none; } QPushButton:hover { background-color: #0060df; } QStatusBar { background-color: #2c2c2e; } #sidebar { background-color: #232325; }"
         self.setStyleSheet(dark if theme == 'dark' else light)
-        self.sidebar.setObjectName("sidebar"); self.style().unpolish(self); self.style().polish(self)
+        self.sidebar.setObjectName("sidebar")
+        # The unpolish/polish calls can be unstable on some systems.
+        # Removing them for a more robust, if slightly less dynamic, theme switch.
+        # self.style().unpolish(self)
+        # self.style().polish(self)
     def export_chat_history(self):
         content = self.ai_output_display.toPlainText()
         if not content.strip(): QMessageBox.information(self, "Export Empty", "There is no chat history to export."); return
